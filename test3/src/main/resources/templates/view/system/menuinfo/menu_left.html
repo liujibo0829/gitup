@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<title>Insert title here</title>
+<link href="../../../resource/dtree/dtree.css"  rel="stylesheet"/>
+<script  src="../../../resource/dtree/dtree.js"></script>
+</head>
+
+<body>
+<script  type="text/javascript" >
+//创建一颗树
+var d = new dTree('d');
+d.add(0,-1,"根节点",'menu_show.html','','main');
+d.add(1,0,"系统管理",'','','main');
+d.add(2,1,"用户管理",'menu_show.html','','main');
+d.add(3,1,"角色管理",'menu_show.html','','main');
+d.add(4,1,"菜单管理",'menu_show.html','','main');
+d.add(5,0,"客户管理",'','','');
+d.add(6,5,"客户资源",'menu_show.html','','main');
+
+
+document.write(d);
+
+</script>
+</body>
+</html>

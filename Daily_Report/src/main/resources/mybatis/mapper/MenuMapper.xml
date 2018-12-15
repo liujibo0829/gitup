@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baa.dailyreport.dao.MenuDao">
+	<!-- 定义beans类属性与数据表字段对应关系 -->
+	<resultMap id="MenuMap" type="com.baa.dailyreport.pojo.Menu">
+		<id column="menu_id" jdbcType="INTEGER" property="menuId" />
+		<result column="menu_menu_id" jdbcType="INTEGER" property="menuMenuId" />
+		<result column="menu_name" jdbcType="VARCHAR" property="menuName" />
+		<result column="menu_url" jdbcType="VARCHAR" property="menuUrl" />
+		<result column="menu_desc" jdbcType="VARCHAR" property="menuDesc" />
+		<result column="menu_mark" jdbcType="VARCHAR" property="menuMark" />
+		<result column="menu_info_url" jdbcType="VARCHAR" property="menuInfoUrl" />
+	</resultMap>
+
+	<select id="queryAllMenu" resultMap="MenuMap">
+		select * from menu
+		where
+		menu_mark=1
+	</select>
+	<!-- 取出最大的menu_id -->
+	<select id="queryAll" resultType="Menu">
+		select max(menu_id) menu_id
+		from menu
+	</select>
+	<!-- 通过菜单编号查询 -->
+	<select id="findMenuById" resultType="Menu">
+		select * from menu
+		where
+		menu_id=#{menuId}
+	</select>
+	<!-- 通过父级菜单编号查询是否存在子菜单 -->
+	<select id="findMenuByPid" resultMap="MenuMap">
+		select * from menu
+		where
+		menu_menu_id=#{menuId} and menu_mark=1
+	</select>
+	<!-- 添加菜单 -->
+	<insert id="addMenu" parameterType="Menu">
+		insert into menu
+		(menu_menu_id,
+		<if test="menuName!=null and menuName!=''">menu_name,
+		</if>
+		<if test="menuUrl!=null and menuUrl!=''">menu_url,
+		</if>
+		<if test="menuDesc!=null and menuDesc!=''">menu_desc,
+		</if>
+		<if test="menuInfoUrl!=null and menuInfoUrl!=''">menu_info_url,
+		</if>
+		<if test="menuMark!=null and menuMark!=''">menu_mark
+		</if>
+		)
+		values(#{menuMenuId},
+		<if test="menuName!=null and menuName!=''">#{menuName},
+		</if>
+		<if test="menuUrl!=null and menuUrl!=''">#{menuUrl},
+		</if>
+		<if test="menuDesc!=null and menuDesc!=''">#{menuDesc},
+		</if>
+		<if test="menuInfoUrl!=null and menuInfoUrl!=''">#{menuInfoUrl},
+		</if>
+		<if test="menuMark!=null and menuMark!=''">#{menuMark}
+		</if>
+		)
+	</insert>
+
+	<update id="updateMenu" parameterType="Menu">
+		update menu set
+		menu_menu_id=#{menuMenuId},
+		<if test="menuName!=null and menuName!=''">menu_name=#{menuName},
+		</if>
+		<if test="menuUrl!=null and menuUrl!=''">menu_url=#{menuUrl},
+		</if>
+		<if test="menuDesc!=null and menuDesc!=''">menu_desc=#{menuDesc},
+		</if>
+		<if test="menuInfoUrl!=null and menuInfoUrl!=''">menu_info_url=#{menuInfoUrl}
+		</if>
+		where
+		menu_id=#{menuId}
+	</update>
+	<update id="deleteMenu" parameterType="Menu">
+		update menu set
+		menu_mark=#{menuMark}
+		where
+		menu_id=#{menuId}
+	</update>
+</mapper> 

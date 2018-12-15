@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baa.dailyreport.dao.DailyReportDao">
+	<!-- 定义beans类属性与数据表字段对应关系 -->
+	<resultMap id="DailyReportMap" type="com.baa.dailyreport.pojo.DailyReport">
+		<id column="dailyreport_id" jdbcType="INTEGER" property="dailyReportId" />
+		<result column="user_id" jdbcType="INTEGER" property="userId" />
+		<result column="dailyreport" jdbcType="VARCHAR" property="dailyReport" />
+		<result column="createdate" jdbcType="VARCHAR" property="createDate" />
+		<result column="dailyreport_state" jdbcType="VARCHAR" property="dailyReportState" />
+		<result column="reader" jdbcType="VARCHAR" property="reader" />
+		<result column="reader_date" jdbcType="VARCHAR" property="readerDate" />
+		<result column="dailyreport_mark" jdbcType="VARCHAR" property="dailyReportMark" />
+		<association property="user" javaType="com.baa.dailyreport.pojo.User"
+			column="user_id">
+			<id column="user_id" jdbcType="INTEGER" property="userId" />
+			<result column="dept_id" jdbcType="INTEGER" property="deptId" />
+			<result column="role_id" jdbcType="INTEGER" property="roleId" />
+			<result column="user_name" jdbcType="VARCHAR" property="userName" />
+			<result column="user_account" jdbcType="VARCHAR" property="userAccount" />
+			<result column="user_password" jdbcType="VARCHAR" property="userPassword" />
+			<result column="user_user_id" jdbcType="VARCHAR" property="userUserId" />
+			<result column="user_mark" jdbcType="VARCHAR" property="userMark" />
+		</association>
+	</resultMap>
+	<!-- 查询所有日报 -->
+	<select id="queryAll" resultMap="DailyReportMap">
+		select
+		dailyreport_id,users.user_name,dailyreport,createdate,reader,reader_date
+		from dailyreport,users where dailyreport.user_id=users.user_id and
+		dailyreport_mark=1 order
+		by createdate desc
+	</select>
+
+	<!-- 通过条件查询日报 -->
+	<select id="findDailyReport" resultMap="DailyReportMap">
+		select*from dailyreport where user_id=#{userId}
+		<if test="createDate!=null  and  createDate !=''">
+			AND createdate=#{createDate}
+		</if>
+		and dailyreport_mark=1
+		ORDER BY dailyreport_state,createdate desc
+	</select>
+	<!-- 通过上级查询日报 -->
+	<select id="findSubordinates" resultMap="DailyReportMap">
+		select
+		users.user_name,dailyreport.dailyreport_id,dailyreport,createdate from
+		users,dailyreport where
+		users.user_user_id=#{userId} and
+		dailyreport.dailyreport_state='未阅读' and
+		users.user_id=dailyreport.user_id and dailyreport_mark=1
+	</select>
+	<!-- 通过日报ID查询日报 -->
+	<select id="findDailyReportByDailyReportId" resultType="DailyReport">
+		select *
+		from
+		dailyreport where dailyreport_id=#{dailyReportId}
+	</select>
+	<insert id="writeDailyReport" parameterType="DailyReport">
+		insert into
+		dailyreport
+		(user_id,dailyreport,createdate,dailyreport_state,dailyreport_mark)
+		values
+		(#{userId},#{dailyReport},#{createDate},#{dailyReportState},#{dailyReportMark})
+	</insert>
+	<!-- 批阅 -->
+	<update id="readDailyReport" parameterType="DailyReport">
+		update dailyreport
+		set
+		dailyreport_state=#{dailyReportState},reader=#{reader},reader_date=#{readerDate}
+		where
+		dailyreport_id=#{dailyReportId} and createdate=#{createDate}
+	</update>
+	
+	<update id="delDailyReport" parameterType="DailyReport">
+		update dailyreport
+		set
+		dailyreport_mark=#{dailyReportMark}
+		where user_id=#{userId} and createdate=#{createDate}
+	</update>
+</mapper> 

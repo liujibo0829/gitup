@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baa.dailyreport.dao.RoleMenuDao">
+	<!-- 定义beans类属性与数据表字段对应关系 -->
+	<resultMap id="RoleMenuMap" type="com.baa.dailyreport.pojo.RoleMenu">
+		<id column="role_menu_id" jdbcType="INTEGER" property="roleMenuId" />
+		<result column="menu_id" jdbcType="INTEGER" property="menuId" />
+		<result column="role_id" jdbcType="INTEGER" property="roleId" />
+		<association property="user" javaType="com.baa.dailyreport.pojo.User"
+			column="user_id">
+			<id column="user_id" jdbcType="INTEGER" property="userId" />
+			<result column="dept_id" jdbcType="INTEGER" property="deptId" />
+			<result column="role_id" jdbcType="INTEGER" property="roleId" />
+			<result column="user_name" jdbcType="VARCHAR" property="userName" />
+			<result column="user_account" jdbcType="VARCHAR" property="userAccount" />
+			<result column="user_password" jdbcType="VARCHAR" property="userPassword" />
+			<result column="user_user_id" jdbcType="VARCHAR" property="userUserId" />
+			<result column="user_mark" jdbcType="VARCHAR" property="userMark" />
+		</association>
+		<association property="menu" javaType="com.baa.dailyreport.pojo.Menu"
+			column="menu_id">
+			<id column="menu_id" jdbcType="INTEGER" property="menuId" />
+			<result column="menu_menu_id" jdbcType="INTEGER" property="menuMenuId" />
+			<result column="menu_name" jdbcType="VARCHAR" property="menuName" />
+			<result column="menu_url" jdbcType="VARCHAR" property="menuUrl" />
+			<result column="menu_desc" jdbcType="VARCHAR" property="menuDesc" />
+			<result column="menu_mark" jdbcType="VARCHAR" property="menuMark" />
+			<result column="menu_info_url" jdbcType="VARCHAR" property="menuInfoUrl" />
+
+		</association>
+	</resultMap>
+
+
+	<select id="queryAll" resultMap="RoleMenuMap">
+		select * from role_menu where
+		role_id=#{roleId}
+	</select>
+	<select id="findMenu" resultMap="RoleMenuMap">
+		SELECT * FROM menu WHERE menu_id
+		IN (SELECT menu_id FROM role_menu WHERE role_id=#{roleId})
+	</select>
+	<insert id="addRoleMenu" parameterType="RoleMenu">
+		insert into role_menu
+		(menu_id,role_id) values(#{menuId},#{roleId})
+	</insert>
+
+	<delete id="delete" parameterType="INTEGER">
+		delete from role_menu where
+		role_id=#{roleId}
+	</delete>
+</mapper> 

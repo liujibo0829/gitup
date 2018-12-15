@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baa.dailyreport.dao.RoleDao">
+	<!-- 定义beans类属性与数据表字段对应关系 -->
+	<resultMap id="RoleMap" type="com.baa.dailyreport.pojo.Role">
+		<id column="role_id" jdbcType="INTEGER" property="roleId" />
+		<result column="role_name" jdbcType="INTEGER" property="roleName" />
+		<result column="role_desc" jdbcType="INTEGER" property="roleDesc" />
+		<result column="role_mark" jdbcType="VARCHAR" property="roleMark" />
+	</resultMap>
+
+	<!-- 查找角色 -->
+	<select id="queryRole" resultMap="RoleMap">
+		select * from role where
+		role_mark=#{roleMark}
+		<if test="roleName!=null and roleName!=''">
+			<bind name="roleName" value="'%'+roleName+'%'" />
+			and role_name  like #{roleName}
+		</if>
+	</select>
+
+	<!-- 通过id查找角色信息 -->
+	<select id="findRoleById" resultType="Role">
+		select*from role where
+		role_id=#{roleId}
+	</select>
+	<!-- 插入角色 -->
+	<insert id="addRole" parameterType="role">
+		insert into
+		role(
+		<if test="roleName!=null and roleName!=''">role_name,</if>
+		<if test="roleDesc!=null and roleDesc!=''">role_desc,</if>
+		<if test="roleMark!=null and roleMark!=''">role_mark</if>
+		)values(
+		<if test="roleName!=null and roleName!=''">#{roleName},</if>
+		<if test="roleDesc!=null and roleDesc!=''">#{roleDesc},</if>
+		<if test="roleMark!=null and roleMark!=''">#{roleMark}</if>
+		)
+	</insert>
+	<!-- 修改角色信息 -->
+	<update id="updateRole" parameterType="Role">
+		update role set
+		<if test="roleName!=null and roleName!=''">
+			role_name=#{roleName},
+		</if>
+		<if test="roleName!=null and roleName!=''">role_desc=#{roleDesc}
+		</if>
+		where
+		role_id=#{roleId};
+	</update>
+	<update id="deleteRole" parameterType="Role">
+		update role set
+		role_mark=#{roleMark} where
+		role_id=#{roleId};
+	</update>
+</mapper> 
+	

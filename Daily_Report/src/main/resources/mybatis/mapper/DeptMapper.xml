@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baa.dailyreport.dao.DeptDao">
+	<!-- 定义beans类属性与数据表字段对应关系 -->
+	<resultMap id="DeptMap" type="com.baa.dailyreport.pojo.Dept">
+		<id column="dept_id" jdbcType="INTEGER" property="deptId" />
+		<result column="dept_dept_id" jdbcType="INTEGER" property="deptDeptId" />
+		<result column="dept_name" jdbcType="VARCHAR" property="deptName" />
+		<result column="dept_local" jdbcType="VARCHAR" property="deptLocal" />
+		<result column="dept_level" jdbcType="INTEGER" property="deptLevel" />
+		<result column="dept_mark" jdbcType="VARCHAR" property="deptMark" />
+	</resultMap>
+
+	<select id="queryDept" resultMap="DeptMap">
+		select*from dept where
+		dept_mark=#{deptMark}
+		<if test="deptName!=null and deptName!=''">
+			<bind name="deptName" value="'%'+deptName+'%'" />
+			and dept_name like #{deptName}
+		</if>
+	</select>
+	<select id="findDeptById" resultType="Dept">
+		select *from dept where
+		dept_id=#{deptId} and dept_mark=1
+	</select>
+	<insert id="addDept" parameterType="Dept">
+		insert into dept
+		(
+		<if test="deptDeptId!=null and deptDeptId!=''">
+			dept_dept_id,
+		</if>
+		<if test="deptName!=null and deptName!=''">
+			dept_name,
+		</if>
+		<if test="deptLocal!=null and deptLocal!=''">
+			dept_local,
+		</if>
+		<if test="deptLevel!=null and deptLevel!=''">
+			dept_level,
+		</if>
+		<if test="deptMark!=null and deptMark!=''">
+			dept_mark
+		</if>
+		)values(
+		<if test="deptDeptId!=null and deptDeptId!=''">
+			#{deptDeptId},
+		</if>
+		<if test="deptName!=null and deptName!=''">
+			#{deptName},
+		</if>
+		<if test="deptLocal!=null and deptLocal!=''">
+			#{deptLocal},
+		</if>
+		<if test="deptLevel!=null and deptLevel!=''">
+			#{deptLevel},
+		</if>
+		<if test="deptMark!=null and deptMark!=''">
+			#{deptMark}
+		</if>
+		)
+	</insert>
+
+	<update id="updateDept" parameterType="Dept">
+		update dept set
+		<if test="deptName!=null and deptName!=''">
+			dept_name=#{deptName},
+		</if>
+		<if test="deptDeptId!=null and deptDeptId!=''">
+			dept_dept_id=#{deptDeptId},
+		</if>
+		<if test="deptLevel!=null and deptLevel!=''">
+			dept_level=#{deptLevel},
+		</if>
+		<if test="deptLocal!=null and deptLocal!=''">
+			dept_local=#{deptLocal}
+		</if>
+	     	where dept_id=#{deptId}
+	</update>
+
+	<update id="deleteDept" parameterType="Dept">
+		update dept set
+		dept_mark=#{deptMark}
+		where
+		dept_id=#{deptId}
+	</update>
+</mapper>

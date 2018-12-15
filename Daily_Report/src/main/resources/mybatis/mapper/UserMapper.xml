@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baa.dailyreport.dao.UserDao">
+	<!-- 定义beans类属性与数据表字段对应关系 -->
+	<resultMap id="UserMap" type="com.baa.dailyreport.pojo.User">
+		<id column="user_id" jdbcType="INTEGER" property="userId" />
+		<result column="dept_id" jdbcType="INTEGER" property="deptId" />
+		<result column="role_id" jdbcType="INTEGER" property="roleId" />
+		<result column="user_name" jdbcType="VARCHAR" property="userName" />
+		<result column="user_account" jdbcType="VARCHAR" property="userAccount" />
+		<result column="user_password" jdbcType="VARCHAR" property="userPassword" />
+		<result column="user_user_id" jdbcType="VARCHAR" property="userUserId" />
+		<result column="user_mark" jdbcType="VARCHAR" property="userMark" />
+		<association property="dept" javaType="com.baa.dailyreport.pojo.Dept"
+			column="dept_id">
+			<id column="dept_id" jdbcType="INTEGER" property="deptId" />
+			<result column="dept_dept_id" jdbcType="INTEGER" property="deptDeptId" />
+			<result column="dept_name" jdbcType="VARCHAR" property="deptName" />
+			<result column="dept_local" jdbcType="VARCHAR" property="deptLocal" />
+			<result column="dept_level" jdbcType="INTEGER" property="deptLevel" />
+			<result column="dept_mark" jdbcType="VARCHAR" property="deptMark" />
+		</association>
+		<association property="role" javaType="com.baa.dailyreport.pojo.Role"
+			column="role_id">
+			<id column="role_id" jdbcType="INTEGER" property="roleId" />
+			<result column="role_name" jdbcType="INTEGER" property="roleName" />
+			<result column="role_desc" jdbcType="INTEGER" property="roleDesc" />
+			<result column="role_mark" jdbcType="VARCHAR" property="roleMark" />
+		</association>
+	</resultMap>
+	<!-- 查询用户 -->
+	<select id="queryAllUser" resultMap="UserMap">
+		select
+		users.*,role.role_name,dept.dept_name from users ,dept ,role
+		where
+		users.dept_id=dept.dept_id and
+		users.role_id=role.role_id and
+		user_mark=#{userMark}
+		<if test="userUserId!=null and userUserId!='' ">
+			and user_user_id=#{userUserId}
+		</if>
+		<if test="userAccount!=null and userAccount!='' ">
+			<bind name="userAccount" value="'%'+userAccount+'%'" />
+			and user_account like #{userAccount}
+		</if>
+		<if test="userName!=null and userName!=''">
+			<bind name="userName" value="'%'+userName+'%'" />
+			and user_name like #{userName}
+		</if>
+		<if test="userId!=null and userId!=''">
+			<bind name="userId" value="'%'+userId+'%'" />
+			and user_id like #{userId}
+		</if>
+	</select>
+	<!-- 登录 -->
+	<select id="login" resultType="User" parameterType="User">
+		select *from
+		users where
+		user_account=#{userAccount} and
+		user_password=#{userPassword}
+	</select>
+	<!-- 通过Account查找用户 -->
+	<select id="findUserByAccount" resultType="User">
+		select
+		users.user_id,dept.dept_name,users.user_user_id,dept.dept_dept_id,role.role_name,users.user_name,users.user_account,users.user_password
+		from users ,dept ,role where users.dept_id=dept.dept_id and
+		users.role_id=role.role_id and user_mark=1 and
+		user_account=#{userAccount}
+	</select>
+	<!-- 通过名字查找用户 -->
+	<select id="findUserByName" resultType="User">
+		select *from users where
+		user_name=#{userName}
+	</select>
+	<!-- 通过id查找用户 -->
+	<select id="findUserById" resultType="User">
+		select *from users where
+		user_id=#{userId}
+	</select>
+	<!-- 注册员工 -->
+	<insert id="insertUser" parameterType="User">
+		insert into
+		users(
+		<if test="userUserId!=null and userUserId!=''">user_user_id,</if>
+		<if test="userName!=null and userName!=''">user_name,</if>
+		<if test="userAccount!=null and userAccount!=''">user_account,</if>
+		<if test="userPassword!=null and userPassword!=''">user_password,</if>
+		<if test="deptId!=null and deptId!=''">dept_id,</if>
+		<if test="roleId!=null and roleId!=''">role_id,</if>
+		<if test="userMark!=null and userMark!=''">user_mark</if>
+		)
+		values(
+		<if test="userUserId!=null and userUserId!=''">#{userUserId},</if>
+		<if test="userName!=null and userName!=''">#{userName},</if>
+		<if test="userAccount!=null and userAccount!=''">#{userAccount},</if>
+		<if test="userPassword!=null and userPassword!=''">#{userPassword},</if>
+		<if test="deptId!=null and deptId!=''">#{deptId},</if>
+		<if test="roleId!=null and roleId!=''">#{roleId},</if>
+		<if test="userMark!=null and userMark!=''">#{userMark}</if>
+		)
+	</insert>
+	<!-- 修改信息 -->
+	<update id="updateUser" parameterType="User">
+		update users set
+		user_user_id=#{userUserId},
+		<if test="userName!=null and userName!=''">user_name=#{userName},</if>
+		<if test="userAccount!=null and userAccount!=''">user_account=#{userAccount},</if>
+		<if test="userPassword!=null and userPassword!=''">user_password=#{userPassword},</if>
+		<if test="deptId!=null and deptId!=''">dept_id=#{deptId},</if>
+		<if test="roleId!=null and roleId!=''">role_id=#{roleId}</if>
+		where
+		user_id=#{userId}
+	</update>
+
+	<update id="upPassword" parameterType="User">
+		update users set
+		user_password=#{userPassword}
+		where
+		user_id=#{userId}
+	</update>
+
+	<update id="delUser" parameterType="User">
+		update users set
+		user_mark=#{userMark}
+		where
+		user_id=#{userId}
+	</update>
+
+</mapper> 

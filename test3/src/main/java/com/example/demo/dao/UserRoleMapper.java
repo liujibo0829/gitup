@@ -1,6 +1,7 @@
 package com.example.demo.dao;
 
 import com.example.demo.pojo.UserRole;
+import java.util.List;
 
 public interface UserRoleMapper {
     /**
@@ -50,4 +51,5 @@ public interface UserRoleMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(UserRole record);
+    List allRole();
 }

@@ -35,53 +35,63 @@
 			
 					<th>操作</th>
 				</tr>
-				<tr>
-					<td>1001</td>
-					<td>人事专员</td>
-					<td>招聘人员</td>
-	
+
+				<tr th:each ="i:${list}">
+					<td th:text = "${i.roleid}"></td>
+					<td th:text = "${i.rolename}"></a></td>
+					<td th:text = "${i.roledesc}"></td>
 					<td>
 						<a href="role_update.html">修改</a>
-						<a href="">删除</a>
-					</td>
-				</tr>			
-								<tr>
-					<td>1001</td>
-					<td>人事专员</td>
-					<td>招聘人员</td>
-	
-					<td>
-						<a href="role_update.html">修改</a>
-						<a href="">删除</a>
-					</td>
-				</tr>				<tr>
-					<td>1001</td>
-					<td>人事专员</td>
-					<td>招聘人员</td>
-	
-					<td>
-						<a href="role_update.html">修改</a>
-						<a href="">删除</a>
-					</td>
-				</tr>				<tr>
-					<td>1001</td>
-					<td>人事专员</td>
-					<td>招聘人员</td>
-	
-					<td>
-						<a href="role_update.html">修改</a>
-						<a href="">删除</a>
-					</td>
-				</tr>				<tr>
-					<td>1001</td>
-					<td>人事专员</td>
-					<td>招聘人员</td>
-	
-					<td>
-						<a href="role_update.html">修改</a>
-						<a href="">删除</a>
+						<a href="role_update.html">删除</a>
 					</td>
 				</tr>
+				<!--<tr>-->
+					<!--<td>1001</td>-->
+					<!--<td>人事专员</td>-->
+					<!--<td>招聘人员</td>-->
+	<!---->
+					<!--<td>-->
+						<!--<a href="role_update.html">修改</a>-->
+						<!--<a href="">删除</a>-->
+					<!--</td>-->
+				<!--</tr>			-->
+								<!--<tr>-->
+					<!--<td>1001</td>-->
+					<!--<td>人事专员</td>-->
+					<!--<td>招聘人员</td>-->
+	<!---->
+					<!--<td>-->
+						<!--<a href="role_update.html">修改</a>-->
+						<!--<a href="">删除</a>-->
+					<!--</td>-->
+				<!--</tr>				<tr>-->
+					<!--<td>1001</td>-->
+					<!--<td>人事专员</td>-->
+					<!--<td>招聘人员</td>-->
+	<!---->
+					<!--<td>-->
+						<!--<a href="role_update.html">修改</a>-->
+						<!--<a href="">删除</a>-->
+					<!--</td>-->
+				<!--</tr>				<tr>-->
+					<!--<td>1001</td>-->
+					<!--<td>人事专员</td>-->
+					<!--<td>招聘人员</td>-->
+	<!---->
+					<!--<td>-->
+						<!--<a href="role_update.html">修改</a>-->
+						<!--<a href="">删除</a>-->
+					<!--</td>-->
+				<!--</tr>				<tr>-->
+					<!--<td>1001</td>-->
+					<!--<td>人事专员</td>-->
+					<!--<td>招聘人员</td>-->
+	<!---->
+					<!--<td>-->
+						<!--<a href="role_update.html">修改</a>-->
+						<!--<a href="">删除</a>-->
+					<!--</td>-->
+				<!--</tr>-->
 			</table>
 
 		</div>

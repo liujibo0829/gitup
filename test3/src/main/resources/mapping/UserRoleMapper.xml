@@ -17,6 +17,11 @@
     -->
     RoleId, RoleName, RoleDesc
   </sql>
+  <select id="allRole" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_role
+  </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--
       WARNING - @mbggenerated

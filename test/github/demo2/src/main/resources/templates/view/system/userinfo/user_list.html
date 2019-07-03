@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>用户管理-用户查询</title>
+<link href="../../../resource/css/bootstrap.min.css" rel="stylesheet" />
+<script type="text/javascript" src="../../../resource/js/jquery.min.js"></script>
+<script type="text/javascript"
+	src="../../../resource/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<div>
+		<ul class="breadcrumb" style="margin: 0px;">
+			<li>系统管理</li>
+			<li>用户管理</li>
+			<li>用户查询</li>
+		</ul>
+	</div>
+	<form action="" class="form-inline">
+		<div class="row alert alert-info" style="margin: 0px; padding: 5px; ">
+			<div class="form-group">
+				<label>条件:</label> <select class="form-control">
+					<option>姓名</option>
+					<option>性别</option>
+				</select> <input type="text" class="form-control" name="UserName" id="UserName" placeholder="请输入查询条件"/>
+			</div>
+			<button type="button" class="btn btn-danger" id="queryUser" onclick="queryUser();">查询 </button>
+			<a href="user_add.html" class="btn btn-success" >添加用户</a>
+		</div>
+		<div class="row" style="padding: 15px;">
+			<table class="table table-hover table-condensed">
+				<tr>
+					<td>用户编号</td>
+					<td>用户账号</td>
+					<td>用户姓名</td>
+					<td>用户性别</td>
+					<td>用户年龄</td>
+					<td>家庭地址</td>
+					<td>操作</td>
+				</tr>
+				<tr th:each ="i:${list}">
+					<td th:text = "${i.userid}"></td>
+					<td th:text = "${i.username}"><a href="user_show.html"></a></td>
+					<td th:text = "${i.usertype}"></td>
+					<td th:text = "${i.usercity}"></td>
+					<td th:text = "${i.userjob}"></td>
+					<td th:text = "${i.userid}"></td>
+					<td>
+						<a href="user_update.html">修改</a>
+						<a href="user_update.html">删除</a>
+					</td>
+				</tr>
+				
+			</table>
+
+		</div>
+	</form>
+</body>
+</html>
